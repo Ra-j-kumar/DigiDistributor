@@ -15,6 +15,27 @@ def get_customers(db:Session):
 def get_customer(db:Session, customer_id:int):
     return db.query(models.Customer).filter(customer_id == models.Customer.id).first()
 
+def update_customer(db:Session, customer_id:int,customer:schemas.CustomerCreate):
+    db_customer = get_customer(db,customer_id)
+    if not db_customer:
+        return None
+    
+    update_data = customer.model_dump(exclude_unset=True)
+    for field , value in update_data.items():
+        setattr(db_customer,field,value)
+        
+    db.commit()
+    db.refresh(db_customer)
+    return db_customer
+    
+def delete_customer(db:Session,customer_id:int):
+    db_customer = get_customer(db,customer_id)
+    if not db_customer:
+        return None
+    db.delete(db_customer)
+    db.commit()
+    return db_customer
+    
 # ---------- Products ----------
 def create_product(db: Session, product: schemas.ProductCreate):
     db_product = models.Product(**product.model_dump())
@@ -28,3 +49,23 @@ def get_products(db: Session):
 
 def get_product(db: Session, product_id: int):
     return db.query(models.Product).filter(models.Product.id == product_id).first()
+
+def update_product(db:Session,product_id:int,product:schemas.ProductCreate):
+    db_product = get_product(db,product_id)
+    if not db_product:
+        return None
+    update_data = product.model_dump(exclude_unset=True)
+    for field, value in update_data.items():
+        setattr(db_product,field,value)
+    db.commit()
+    db.refresh(db_product)
+    return db_product
+
+def delete_product(db:Session, product_id:int):
+    db_product = get_product(db,product_id)
+    if not db_product:
+        return None
+    
+    db.delete(db_product)
+    db.commit()
+    return db_product

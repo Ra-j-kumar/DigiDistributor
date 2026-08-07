@@ -28,7 +28,7 @@ class ProductCreate(BaseModel):
     hsn_code: Optional[str] = None
     unit: str = "pcs"
     mrp: Optional[float] = None
-    price_per_unit: float
+    price_per_unit: Optional[float] = None
     gst_rate: float = 5.0
     stock_quantity: float = 0
 
