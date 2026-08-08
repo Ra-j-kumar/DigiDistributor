@@ -1,6 +1,35 @@
 from sqlalchemy.orm import Session
 from . import models,schemas
 
+# ---------- Company ----------
+def get_company(db: Session):
+    company = db.query(models.Company).filter(models.Company.id == 1).first()
+    if not company:
+        company = models.Company(
+            id=1,
+            name="Your Company Name",
+            address="",
+            mobile="",
+            gstin="",
+            fssai_no="",
+            fssai_valid_from="",
+            fssai_valid_to="",
+            jurisdiction_text="Subject To Local Jurisdiction."
+        )
+        db.add(company)
+        db.commit()
+        db.refresh(company)
+
+    return company
+
+def update_company(db: Session, data: schemas.CompanyUpdate):
+    company = get_company(db)
+    for field, value in data.model_dump().items():
+        setattr(company, field, value)
+    db.commit()
+    db.refresh(company)
+    return company
+
 # ---------- Customers ----------
 def create_customer(db:Session,customer:schemas.CustomerCreate):
     db_customer = models.Customer(**customer.model_dump())

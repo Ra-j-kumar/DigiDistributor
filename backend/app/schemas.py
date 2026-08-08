@@ -3,6 +3,23 @@ from pydantic import BaseModel
 from typing import Optional
 from datetime import datetime
 
+#------client Detail---------
+class CompanyUpdate(BaseModel):
+    name:str
+    address : Optional[str] = None
+    mobile : Optional[str] = None
+    gstin : Optional[str] = None
+    fssai_no : Optional[str] = None
+    fssai_valid_from : Optional[str] = None
+    fssai_valid_to : Optional[str] = None
+    jurisdiction_text : Optional[str] = "Subject To Local Jurisdiction."
+    
+class CompanyOut(CompanyUpdate):
+    id: int
+
+    class Config:
+        from_attributes = True
+
 #------customer---------
 class CustomerCreate(BaseModel):
     name: str

@@ -1,6 +1,18 @@
 from .database import Base
 from sqlalchemy import Column , Integer, String, Float, DateTime , func
 
+class Company(Base):
+    __tablename__ = "company"
+    id = Column(Integer,primary_key=True,index=True)
+    name = Column(String, nullable=False, default="Your Company Name")
+    address = Column(String, nullable=False)
+    mobile = Column(String, nullable=False)
+    gstin = Column(String, nullable=False)
+    fssai_no = Column(String, nullable=False)
+    fssai_valid_from = Column(String, nullable=False)   # stored as plain text e.g. "02-10-2022"
+    fssai_valid_to = Column(String, nullable=False)
+    jurisdiction_text = Column(String, default="Subject To Local Jurisdiction.")
+
 class Customer(Base):
     __tablename__ = "customers"
     id = Column(Integer,primary_key=True,index=True)

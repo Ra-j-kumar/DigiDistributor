@@ -2,7 +2,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from .database import engine, Base
-from .routers import customers,products
+from .routers import customers,products,company
 
 Base.metadata.create_all(bind=engine)
 app = FastAPI(title="DigiDistibutor")
@@ -17,6 +17,7 @@ app.add_middleware(CORSMiddleware,
 
 app.include_router(customers.router)
 app.include_router(products.router)
+app.include_router(company.router)
 
 
 @app.get("/")
